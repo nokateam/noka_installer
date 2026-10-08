@@ -30,14 +30,22 @@ $REPO/releases/latest/download/noka_installer"
 fi
 
 dpkg --configure -a --force-confold 2>/dev/null || true
-pkg update -y
-pkg install -y curl ca-certificates coreutils unzip
+echo "[*] updating packages (the first run can take a while)"
+pkg update -y || true
+pkg upgrade -y || true
+pkg install -y curl ca-certificates coreutils unzip || true
+
+if ! command -v curl >/dev/null 2>&1; then
+    echo "[!] setup incomplete: curl is missing"
+    echo "    close termux, reopen it, and run the setup command again"
+    exit 1
+fi
 
 TMP="$(mktemp -d)"
 got=0
 for url in $CANDIDATES; do
     echo "[*] fetching $url"
-    if curl -fSL --connect-timeout 15 --max-time 180 "$url" -o "$TMP/noka_installer" 2>/dev/null; then
+    if curl -fSL --connect-timeout 15 --max-time 180 "$url" -o "$TMP/noka_installer"; then
         got=1
         break
     fi
@@ -46,7 +54,8 @@ done
 if [ "$got" -ne 1 ]; then
     rm -rf "$TMP"
     echo "[!] couldn't download the installer for $TARGET"
-    echo "    tell nooba in discord.gg/noka"
+    echo "    try: pkg update && pkg upgrade"
+    echo "    still stuck? tell nooba in discord.gg/noka"
     exit 1
 fi
 
