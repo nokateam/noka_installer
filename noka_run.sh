@@ -66,5 +66,4 @@ fi
 install -m755 "$TMP/noka_installer" "$BIN"
 rm -rf "$TMP"
 echo ""
-echo "[*] installed $BIN"
-echo "[*] done. now type:  noka_installer"
+echo "[*] setup done. type:  noka_installer into termux"
