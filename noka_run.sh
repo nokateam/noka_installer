@@ -65,5 +65,6 @@ fi
 
 install -m755 "$TMP/noka_installer" "$BIN"
 rm -rf "$TMP"
+echo ""
 echo "[*] installed $BIN"
-exec "$BIN" "$@"
+echo "[*] done. now type:  noka_installer"
