@@ -29,11 +29,15 @@ $REPO/releases/latest/download/noka_installer-$TARGET
 $REPO/releases/latest/download/noka_installer"
 fi
 
-dpkg --configure -a --force-confold 2>/dev/null || true
+export DEBIAN_FRONTEND=noninteractive
+APT_OPTS="-o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold"
+
 echo "[*] updating packages (the first run can take a while)"
-pkg update -y || true
-pkg upgrade -y || true
-pkg install -y curl ca-certificates coreutils unzip || true
+dpkg --force-confdef --force-confold --configure -a </dev/null || true
+apt-get $APT_OPTS -y update </dev/null || true
+apt-get $APT_OPTS -y full-upgrade </dev/null || true
+apt-get $APT_OPTS -y install curl ca-certificates coreutils unzip </dev/null || true
+dpkg --force-confdef --force-confold --configure -a </dev/null || true
 
 if ! command -v curl >/dev/null 2>&1; then
     echo "[!] setup incomplete: curl is missing"
@@ -54,7 +58,7 @@ done
 if [ "$got" -ne 1 ]; then
     rm -rf "$TMP"
     echo "[!] couldn't download the installer for $TARGET"
-    echo "    try: pkg update && pkg upgrade"
+    echo "    close termux, reopen it, and run the setup command again"
     echo "    still stuck? tell nooba in discord.gg/noka"
     exit 1
 fi
