@@ -1,5 +1,6 @@
 {
-  "versionCode": 14,
-  "versionName": "2.1",
-  "url": "https://github.com/nokateam/noka_installer/raw/refs/heads/main/noka.apk"
+  "versionCode": 15,
+  "versionName": "2.2",
+  "url": "https://github.com/nokateam/noka_installer/raw/refs/heads/main/noka.apk",
+  "sha256": "0cd6a2ad6e1e181296861f6aeb992e3f97dcfd5e25a0f821fd08928b0c7c1268"
 }
